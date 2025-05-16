@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta charset="UTF-8" />
+  <title>DNS Generator - koma</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Share Tech Mono', monospace;
+      background: linear-gradient(to bottom, #000000, #111111);
+      color: #00ffcc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px #00ffcc;
+    }
+
+    input, button {
+      font-size: 1rem;
+      padding: 0.7rem 1.2rem;
+      border: none;
+      border-radius: 5px;
+      margin: 0.5rem;
+      background: #222;
+      color: #00ffcc;
+      outline: none;
+      width: 80%;
+      max-width: 300px;
+      text-align: center;
+      box-shadow: 0 0 10px #00ffcc50;
+    }
+
+    button {
+      cursor: pointer;
+      font-weight: bold;
+      background: #00ffcc;
+      color: black;
+      text-shadow: none;
+    }
+
+    .result {
+      margin-top: 1rem;
+      text-align: center;
+      word-wrap: break-word;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>KOMA DNS PANEL</h1>
+
+  <input id="volume" placeholder="Enter Volume (MB)" type="number" />
+  <input id="duration" placeholder="Enter Duration (min)" type="number" class="hidden" />
+  <button id="nextBtn">Next</button>
+  
+  <div class="result hidden" id="dnsResult">
+    <p><strong>IPv4:</strong> <span id="ipv4"></span></p>
+    <p><strong>IPv6:</strong> <span id="ipv6"></span></p>
+  </div>
+
+  <script>
+    const volumeInput = document.getElementById('volume');
+    const durationInput = document.getElementById('duration');
+    const nextBtn = document.getElementById('nextBtn');
+    const result = document.getElementById('dnsResult');
+    const ipv4Span = document.getElementById('ipv4');
+    const ipv6Span = document.getElementById('ipv6');
+
+    let step = 1;
+
+    nextBtn.addEventListener('click', () => {
+      if (step === 1) {
+        if (volumeInput.value === "") return alert("Enter volume first!");
+        durationInput.classList.remove('hidden');
+        step++;
+      } else if (step === 2) {
+        if (durationInput.value === "") return alert("Enter duration!");
+        nextBtn.textContent = "Generate DNS";
+        step++;
+      } else {
+        const ipv4 = Array(4).fill(0).map(() => Math.floor(Math.random() * 256)).join('.');
+        const ipv6 = "89d1:" + Array(7).fill(0).map(() => Math.floor(Math.random() * 65536).toString(16)).join(":");
+
+        ipv4Span.textContent = ipv4;
+        ipv6Span.textContent = ipv6;
+        result.classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
